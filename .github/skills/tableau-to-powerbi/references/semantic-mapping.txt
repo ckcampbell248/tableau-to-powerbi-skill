@@ -1,0 +1,84 @@
+REVIEWED SEMANTIC MAPPING, NOT SYNTAX REPLACEMENT
+
+Before coding: establish grain, expected output, filters/context, data types,
+null/blank semantics, collation/case, timezone and date calendar. Preserve the
+source-object ID and approved target identifier separately. Do not use captions
+as a unique key; escape TMDL, DAX, M and JSON names in their respective grammars.
+
+Source                              Candidate target / required review
+------                              ----------------------------------
+Physical table, typed fields        M connector/navigation/type steps + columns.
+                                    Map integer -> int64, real -> double or an
+                                    approved decimal type, string -> string,
+                                    boolean -> boolean, date/datetime deliberately.
+                                    Currency precision and spatial need review.
+Logical relations/blending          Model tables/relationships or reviewed M join.
+                                    Validate grain, multiplicity, join behavior,
+                                    filter directions and totals first.
+Row-level calculation              M column or DAX calculated column depending
+                                    on refresh/evaluation intent, not a measure
+                                    merely because it contains arithmetic.
+Aggregate calculation              Explicit DAX measure; validate aggregation.
+                                    Simple SUM([Sales]) may become SUM('Sales'[Sales])
+                                    ONLY after field/grain/type/filter review.
+{FIXED/INCLUDE/EXCLUDE ...}          Per-calculation design; may use SUMMARIZE,
+                                    CALCULATE, REMOVEFILTERS or different modeling,
+                                    but none is a universal LOD translation.
+                                    Test context vs dimension filters and totals.
+WINDOW_*, RUNNING_*, LOOKUP, RANK    Requires partition/addressing/order/frame and
+                                    sort/null semantics. Model or DAX redesign;
+                                    visual calculations only when supported and
+                                    deliberately approved for the target build.
+ATTR, COUNTD, null behavior         ATTR is not blindly SELECTEDVALUE; Tableau
+                                    nulls and DAX BLANK coercion may diverge.
+                                    Test mixed values, empty sets, blank counts.
+Parameters                         What-if table/measure, field parameter or M
+                                    parameter after classifying user-vs-refresh
+                                    behavior. Not interchangeable.
+Sets/groups/bins/hierarchies        Reviewed columns/tables/hierarchies/slicers.
+                                    Dynamic membership and selection need tests.
+Filters/context/user functions     Report/page/visual filters or roles with
+                                    explicit semantics; never infer RLS solely
+                                    from a Tableau worksheet filter.
+Custom SQL                         Security/code review plus approved native
+                                    query or view; read-only credentials,
+                                    folding/refresh behavior, no auto-execution.
+Published datasource              Obtain authorized metadata and source mapping;
+                                    not a reusable Power BI connector by itself.
+Hyper/TDE extract                  Unsupported by these scripts. Approved
+                                    upstream connector/export required.
+Actions                            Explicit cross-filter/highlight, drillthrough,
+                                    navigation or bookmarks; URL actions and
+                                    external side effects require separate review.
+Dashboard layout                   Pages/containers with reviewed scaling.
+                                    Tableau zones can use normalized coordinates
+                                    and nested layouts. No direct pixel copying.
+Maps/spatial, stories, extensions   Explicit unsupported/review-needed unless a
+                                    tested replacement is approved. External
+                                    tiles/resources and custom visuals need
+                                    security, licensing and accessibility review.
+
+M SOURCE EXAMPLE (illustrative, not runnable project configuration)
+  let
+      Source = Sql.Database(Server, Database),
+      Sales = Source{[Schema="dbo", Item="Sales"]}[Data],
+      Typed = Table.TransformColumnTypes(Sales,
+                  {{"OrderDate", type date}, {"Amount", type number}})
+  in
+      Typed
+Server/Database must be approved non-secret configuration. Authenticate in
+Desktop/service credentials. Do not embed workbook credentials or URI tokens.
+Do not substitute the synthetic starter table for unavailable production data.
+
+MINIMUM PARITY CASES
+  row counts, distinct key counts, duplicate keys, orphan keys, nulls/BLANKs;
+  row-level and grouped measures, grand totals vs sum of subtotals;
+  multiple filters, context filter precedence, slicer reset, RLS identities;
+  date boundaries, week/year starts, timezones, leap days, decimal rounding;
+  LOD at differing view grains; table-calc sort/partition/frame changes;
+  parameter changes, selection actions, navigation, tooltip/drillthrough;
+  visual ordering, conditional formatting, layout and accessibility.
+
+Acceptance evidence must identify source version, target build, approved dataset
+snapshot (without copying data into public logs), tolerances, actual results and
+reviewer approval. A plausible chart alone is not a semantic test.

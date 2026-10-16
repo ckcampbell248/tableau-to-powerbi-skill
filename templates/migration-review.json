@@ -1,0 +1,29 @@
+{
+  "format_version": 1,
+  "overall_status": "review_needed",
+  "source_revision": null,
+  "target_desktop_build": null,
+  "scope_and_tolerances": null,
+  "objects": [],
+  "object_record_contract": {
+    "source_id": "copy from compatibility.json; add explicit locators for discoveries",
+    "source_locator": "structural locator in the approved source revision",
+    "target": "target relative file and model/report object, or null",
+    "status": "review_needed | blocked | unsupported | implemented_unvalidated | validated",
+    "confidence": "unassessed | low | medium | high",
+    "rationale": "implementation decision or explicit reason for a gap",
+    "evidence": "actual test artifacts/results; never claim not-run checks passed",
+    "exclusion_approval": "null unless explicitly approved"
+  },
+  "feature_decisions": [],
+  "semantic_substitutions": [],
+  "unsupported": [],
+  "pending_approvals": [],
+  "validation_gates": {
+    "G1_coverage_privacy": {"status": "pending", "evidence": []},
+    "G2_tmdl": {"status": "not_run", "evidence": []},
+    "G3_pbir_schemas_and_bindings": {"status": "not_run", "evidence": []},
+    "G4_desktop_open_refresh": {"status": "not_run", "evidence": []},
+    "G5_parity_acceptance": {"status": "not_run", "evidence": []}
+  }
+}

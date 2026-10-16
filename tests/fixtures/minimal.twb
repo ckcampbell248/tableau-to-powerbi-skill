@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Self-authored synthetic structure; not a Tableau-exported workbook. -->
+<workbook version="2024.1">
+  <datasources>
+    <datasource name="sales" caption="Synthetic Sales">
+      <connection class="sqlserver" server="example.invalid" dbname="synthetic"
+                  username="SECRET_USER" password="SECRET_PASSWORD">
+        <relation type="text">SELECT * FROM synthetic WHERE token = 'SECRET_SQL'</relation>
+      </connection>
+      <column name="[Region]" datatype="string" role="dimension" type="nominal"/>
+      <column name="[Sales]" datatype="real" role="measure" type="quantitative"/>
+      <column name="[Fixed Sales]" datatype="real" role="measure">
+        <calculation class="tableau" formula="{ FIXED [Region] : SUM([Sales]) }"/>
+      </column>
+      <column name="[Running Sales]" datatype="real" role="measure">
+        <calculation class="tableau" formula="RUNNING_SUM(SUM([Sales]))"/>
+      </column>
+      <column name="[Private]" datatype="string" role="dimension">
+        <calculation formula="'SECRET_FORMULA'"/>
+      </column>
+    </datasource>
+    <datasource name="Parameters" hasconnection="false">
+      <column name="[Threshold]" datatype="integer" param-domain-type="range"
+              value="SECRET_PARAMETER"/>
+    </datasource>
+  </datasources>
+  <worksheets>
+    <worksheet name="Regional Sales">
+      <table>
+        <view>
+          <datasource-dependencies datasource="sales">
+            <column name="[Region]"/><column name="[Sales]"/>
+          </datasource-dependencies>
+          <filter class="categorical" column="[Region]"/>
+        </view>
+        <panes><pane><mark class="Bar"/></pane></panes>
+        <rows>[sales].[sum:Sales:qk]</rows>
+        <cols>[sales].[none:Region:nk]</cols>
+      </table>
+    </worksheet>
+  </worksheets>
+  <dashboards>
+    <dashboard name="Overview">
+      <size minwidth="1200" maxwidth="1200" minheight="800" maxheight="800"/>
+      <zones>
+        <zone name="Regional Sales" type-v2="worksheet" x="0" y="0" w="100000" h="100000"/>
+        <zone type-v2="web" url="https://example.invalid/?token=SECRET_URL"
+              x="0" y="0" w="1000" h="1000"/>
+      </zones>
+    </dashboard>
+  </dashboards>
+  <actions><action name="SECRET_ACTION"><link expression="SECRET_LINK"/></action></actions>
+</workbook>

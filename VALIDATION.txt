@@ -1,0 +1,35 @@
+INITIAL IMPLEMENTATION VALIDATION
+
+python3 -m unittest discover -s tests -v
+  40 tests passed; no skips.
+  Standard-library analyzer and local starter-reference checks only.
+  Includes generated TWBX, malformed inputs, privacy assertions, XML limits,
+  DTD/entities, ZIP central-directory preflight, bombs, path/link/encryption
+  checks, CRC corruption, deterministic output and overwrite refusal.
+  Nonregular input/nonblocking flag test uses mocks: the local Windows-mounted
+  filesystem does not support creation of actual FIFOs.
+
+python3 scripts/analyze_tableau.py tests/fixtures/minimal.twb --output-dir migrations/smoke
+  Exit 0; 13 sanitized objects and 13 review-needed mappings.
+  Feature flags: actions, calculations, custom_sql, filters, lod, parameters,
+  relations, table_calculation.
+  Asserted no SECRET_ fixture placeholders in either JSON document.
+  Migration status remains not_started. Smoke artifacts cleaned after checks.
+
+python3 scripts/validate_starter_schemas.py
+  All seven starter JSON documents passed official public Draft-07 schemas.
+  Used the existing optional jsonschema installation, not an analyzer dependency.
+  Schema SHA-256 values from the actual public schema bytes:
+  pbip:       fa3c2298424a28426013d6592c3bb5a3006ca0fc41cf16936031a7d5d9661ea7
+  pbism:      3616692421d52ed8e678cd26b09d3ca06c5f191bbdb0a3abb80b156a202b2c38
+  pbir:       1ea3450d1321a295abca6a9507548b4e2ec99ab11d3d4526aa73713650296ed0
+  version:    06f630c6741ae88dff0d80442295384ef38dca662811ef599a9365b144b3f0ac
+  report:     e9588a6ffe1405b9905f11584228595bd59485b7f9899f2f1442ff0f979d9c01
+  pages:      e8a8803daee6d09927c5f4c303bef10cc9a70391db2960e36bba2055bde057ff
+  page:       0b5f236c21ed742404ec81171c18e8d1f68567ed92bd8fd5c00f0e2f1ad78c8f
+
+NOT PERFORMED
+  TMDL deserialization; Power BI Desktop open/refresh/save/reopen;
+  DAX/M runtime validation; real Tableau workbook tests; semantic/visual parity.
+  Starter JSON-schema validity is not evidence of these checks.
+  The starter has synthetic data and a blank page, not migrated Tableau visuals.

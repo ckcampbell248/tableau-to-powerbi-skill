@@ -1,0 +1,94 @@
+ANALYZER CONTRACT (format_version 1)
+
+The utility is Python standard-library-only, offline and inventory-only.
+No formula export switch exists: names, captions, labels, source paths/filenames,
+arbitrary connector attributes, SQL text, parameter values, URLs, expressions,
+embedded data and archive resource contents are deliberately not exported.
+This is minimization by an output allowlist, not a regex-based secret scrubber.
+Only fixed enumerations, generated IDs, structural locators, bounded integers,
+counts and booleans are emitted. The inventory still reveals report structure;
+treat it as potentially business-confidential.
+
+INPUT
+  .twb: UTF-8 (BOM allowed), unnamespaced XML, root workbook.
+  .twbx: bounded ZIP, exactly one .twb unless --member chooses an exact path.
+  Unsupported: UTF-16/other encodings, namespaced elements, DTD/entity declarations,
+  encrypted/patched ZIP entries, ZIP64/multi-disk archives, BZIP2/LZMA ZIP
+  compression, malformed XML/ZIP, special
+  archive files, ambiguous paths. Do not rename rejected inputs to bypass checks.
+
+DEFAULT BOUNDS (scripts/analyze_tableau.py)
+  XML/workbook: 16 MiB; archive bytes: 64 MiB; archive members: 512.
+  Per member declared size: 32 MiB; total declared uncompressed size: 256 MiB.
+  Maximum declared expansion ratio per member: 100:1.
+  XML elements: 100,000; element nesting: 64; attributes per element: 64.
+  Attribute value: 65,536 characters; all other text bounded by XML byte limit.
+  ZIP payload read is bounded independently of declared member size.
+  All member metadata is checked, including ignored extracts/resources.
+  No member is extracted, no hyperlink is opened, no data/SQL/formula is executed.
+  No cache, credentials, network client, binary parser or third-party converter.
+
+The archive is read into a bounded memory buffer; its central-directory byte
+records and claimed/actual member counts are checked BEFORE ZipFile allocates
+member metadata. Strict central-directory/end-record layout is required
+(unsupported trailers or central-directory extensions are rejected). The XML is
+UTF-8 decoded before DTD/entity detection; forbidden declarations are rejected
+even inside comments as a conservative policy. ElementTree never processes
+external resources. Streaming XML events enforce structural limits before
+inventory traversal. These are application-level bounds, not an OS sandbox.
+Only the selected workbook payload is decompressed/CRC-checked. Ignored archive
+payload integrity is not asserted; archive metadata checks are not a complete
+ZIP forensic validator. Filesystems may not enforce requested POSIX 0700/0600
+modes (notably Windows mounts); use appropriate OS ACLs and an authorized folder.
+
+OUTPUT
+  inventory.json
+    Source format, XML element count, generated objects and feature occurrences.
+    datasource: connector class allowlist, parameter-container hint.
+    field: whitelisted datatype/role/type, calc presence and heuristic flags.
+    worksheet: declared datasource-dependency references, fields, mark types,
+               row/column shelf presence and filter count.
+    dashboard: integer size hints; zone objects with bounds and worksheet IDs.
+    action: presence-only object, not executable action metadata.
+    Unknown enumerated values become "unknown"; bad/missing bounds become null.
+    All such cases remain review_needed. No inferred compatibility guarantee.
+  compatibility.json
+    Inventory status, ALL objects mapped to null target and review_needed,
+    unassessed confidence, detected feature keys, explicit limitations and
+    separate validation results. All Power BI validation starts not_run.
+
+Object IDs use kind plus document-order ordinal, e.g. field_0001.
+Locators are structural paths, e.g. /workbook/*[1]/*[2]/*[3]: the n-th
+element child at each step (XML comments/PIs excluded). Read locally against
+the SAME input XML; never interpret captions as IDs. Reordering source XML can
+change IDs. Dependency and dashboard references retain arrays to expose duplicate
+source names rather than selecting the first match. Candidate arrays are capped
+at 32 with explicit candidate counts and truncation flags to prevent quadratic
+output expansion. Fields beneath an unresolved datasource are not expanded
+(candidate_count null and datasource_unresolved true). Every source object is
+still inventoried; this bound only limits duplicated reference lists.
+A dependency with no mapped
+field or an unresolved zone is not an approved omission.
+
+The utility recognizes top-level datasource column definitions and the usual
+worksheets/dashboard containers. It does not recover a full Tableau semantic
+model, physical/logical relationship graph, field-instance expressions, sorts,
+aliases, encodings, titles, formatting, nesting semantics, context filters,
+calculation dependencies, or action behavior. A successful empty inventory can
+simply mean the input has no supported object containers.
+LOD/table-calc detection is lexical, may match quoted text, and misses unsupported
+functions/syntax. Feature counts can include duplicated worksheet declarations
+or multiple representations. Absence of a flag is never proof of compatibility.
+Unknown top-level sections are counted, not silently called migrated; nested
+unrecognized constructs require source inspection too.
+
+EXIT AND PERSISTENCE
+  0: JSON inventory written; NO conversion or Desktop validation performed.
+  2: expected input/security/IO error; generic safe message, no XML parser text.
+  Invalid command-line syntax also returns argparse's exit 2.
+  Output directory must be NEW and its parent must exist. Never overwrites.
+  No output directory is created on analysis failure. An IO failure during
+  writing can leave partial files; treat that directory as failed, inspect
+  permissions, remove only your own failed artifact, and retry to a NEW path.
+  JSON has sorted keys, no clock/user/machine paths, deterministic document order.
+  TWBX and TWB inventories differ in source_format; archive order is not preserved.

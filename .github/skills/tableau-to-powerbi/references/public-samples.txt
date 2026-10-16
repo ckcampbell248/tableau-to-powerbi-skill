@@ -1,0 +1,52 @@
+PUBLIC TABLEAU WORKBOOK SOURCES
+
+1. Tableau Exchange Accelerators (recommended first complete-workbook source)
+   https://exchange.tableau.com/accelerators
+   Official download instructions:
+   https://help.tableau.com/current/pro/desktop/en-us/accelerators.htm
+
+   Tableau documents Accelerators as prebuilt dashboards with sample data.
+   Sign in to Tableau Exchange, choose an Accelerator, and select Download
+   to obtain a TWBX packaged workbook. An account is required by the documented
+   workflow. Choose a simple sales dashboard before complex industry examples.
+   Prefer an example whose sample data can be exported or accessed separately:
+   bundled Hyper data is not read by this repository's analyzer.
+
+2. Tableau Public
+   https://public.tableau.com/
+   https://help.tableau.com/current/pro/desktop/en-us/publish_workbooks_tableaupublic.htm
+
+   Search for Superstore or a simple dashboard. Use the visualization's Download
+   menu and choose Tableau Workbook when available. Download availability depends
+   on the author's settings; do not bypass disabled downloads. Public visibility
+   alone does not grant redistribution rights.
+
+3. Tableau sample datasets and official tutorial
+   https://public.tableau.com/app/learn/sample-data
+   https://help.tableau.com/current/guides/get-started-tutorial/en-us/get-started-tutorial-home.htm
+
+   These are useful for creating controlled Tableau workbooks with known totals.
+   A downloadable Excel/CSV dataset is NOT a TWB/TWBX report test case by itself.
+   Save a workbook from Tableau after building the desired chart/calculation.
+
+LOCAL CORPUS PRACTICE
+
+Keep authorized downloads under ignored workbooks/ or downloads/. Do not commit
+third-party workbooks, data, images, or extracts. Follow source terms and record
+provenance privately: source URL, author/publisher, retrieval date, download
+permission, file hash, Tableau version and relevant license/use restrictions.
+Do not upload source workbooks to external conversion services.
+
+Suggested progression:
+  A. Self-authored synthetic fixture: parser contracts only (already included).
+  B. Simple downloaded workbook: fields, basic charts, filters, one dashboard.
+  C. Controlled Superstore workbook: known grouped totals and calculation results.
+  D. Advanced workbook: LOD, table calculations, actions, parameters, multiple
+     sources, device layouts; expect explicit review and unsupported decisions.
+
+Record parser outcomes separately from Desktop refresh and numerical/visual
+parity. A publicly downloadable workbook can still lack accessible upstream
+data, require connector credentials, exceed conservative archive limits, or
+contain unsupported features. Never relax those limits silently.
+
+No third-party workbook has been downloaded or included in this repository.

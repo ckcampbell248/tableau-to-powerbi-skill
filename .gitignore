@@ -1,0 +1,30 @@
+# Source workbooks, extracts, external data and generated migration artifacts
+*.twb
+*.twbx
+*.hyper
+*.tde
+*.pbix
+*.pbit
+*.abf
+*.csv
+*.xlsx
+*.parquet
+workbooks/
+downloads/
+migrations/
+inventory/
+private/
+credentials/
+*.env
+.env*
+*credentials*.json
+*secrets*.json
+*.pem
+*.key
+.pbi/
+__pycache__/
+tests/.runs/
+*.py[cod]
+.venv/
+# The only workbook tracked here is self-authored synthetic test data.
+!tests/fixtures/minimal.twb

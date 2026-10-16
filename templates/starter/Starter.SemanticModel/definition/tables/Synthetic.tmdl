@@ -1,0 +1,25 @@
+table Synthetic
+
+    column Category
+        dataType: string
+        summarizeBy: none
+        sourceColumn: Category
+
+    column Amount
+        dataType: double
+        summarizeBy: sum
+        sourceColumn: Amount
+
+    measure 'Synthetic Total' = SUM('Synthetic'[Amount])
+        formatString: #,0.00
+
+    partition Synthetic = m
+        mode: import
+        source =
+            let
+                Source = #table(
+                    type table [Category = text, Amount = number],
+                    {{"Example A", 10.0}, {"Example B", 20.0}}
+                )
+            in
+                Source
