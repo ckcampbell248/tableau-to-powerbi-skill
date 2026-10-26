@@ -1,15 +1,13 @@
-Tableau to Power BI migration skill
-==================================
+# Tableau to Power BI migration skill
 
 A reusable project skill for a **reviewed, agent-guided migration** from Tableau
-``.twb`` / ``.twbx`` to an editable Power BI project using **TMDL + Power Query M
+`.twb` / `.twbx` to an editable Power BI project using **TMDL + Power Query M
 partitions + enhanced PBIR**. Not a universal automatic converter.
 
-What actually runs today
------------------------
+## What actually runs today
 
 * A deterministic, offline, Python-standard-library analyzer that produces
-  minimized structural ``inventory.json`` and a ``compatibility.json`` manifest.
+  minimized structural `inventory.json` and a `compatibility.json` manifest.
 * Bounded ZIP/XML handling, dependency hints, field/calculation feature flags,
   worksheet/dashboard structure, and review-needed source object mappings.
 * Self-authored synthetic TWB tests, generated TWBX tests, and a tiny synthetic
@@ -22,9 +20,9 @@ project authoring, approvals, and separate validation gates. Initial implementat
 used synthetic fixtures only. Subsequent authorized, agent-guided sample tests
 exercised Desktop open/refresh/save/reopen and working TMDL/PBIR projects:
 
-* `Amazon conversion test <reports/amazon-conversion-01.md>`_
-* `HR Analytics conversion test <reports/hr-conversion-01.md>`_
-* `Northstar Logistics conversion test <reports/northstar-conversion-01.md>`_
+* [Amazon conversion test](reports/amazon-conversion-01.md)
+* [HR Analytics conversion test](reports/hr-conversion-01.md)
+* [Northstar Logistics conversion test](reports/northstar-conversion-01.md)
 
 Full Tableau parity and business acceptance remain uncertified. These local tests
 do not add automatic conversion to the analyzer, and passing unit tests or public
@@ -32,41 +30,47 @@ JSON schemas alone does not establish migration parity. The reports are shareabl
 summaries; source workbooks, data, generated projects and detailed evidence remain
 local and ignored.
 
-Install and discover
---------------------
+## Install and discover
 
 Use Python 3.10+ (CI uses 3.11); no package installation is required for the
 analyzer or unit tests. Open this repository directory as the workspace in an
-agent host supporting project skills in ``.github/skills/``. The entry point is::
+agent host supporting project skills in `.github/skills/`. The entry point is:
 
-    .github/skills/tableau-to-powerbi/SKILL.md
+```text
+.github/skills/tableau-to-powerbi/SKILL.md
+```
 
-Ask your agent to use ``tableau-to-powerbi`` to inventory or migrate a workbook.
+Ask your agent to use `tableau-to-powerbi` to inventory or migrate a workbook.
 Check your host's skill discovery/settings; hosts differ. If discovery is not
 available, explicitly ask the agent to read that file and follow its workflow.
 The skill is guidance, not an independently executable agent or Desktop extension.
 To reuse it in another workspace, copy the skill directory AND the supporting
-``scripts/`` and ``templates/`` paths into that workspace without overwriting
+`scripts/` and `templates/` paths into that workspace without overwriting
 existing files. Commands and template paths assume the repository/workspace root.
 
-Usage from repository root
---------------------------
+## Usage from repository root
 
-Analyze the included synthetic structure::
+Analyze the included synthetic structure:
 
-    python3 scripts/analyze_tableau.py tests/fixtures/minimal.twb --output-dir inventory
+```sh
+python3 scripts/analyze_tableau.py tests/fixtures/minimal.twb --output-dir inventory
+```
 
-Analyze your authorized local input (keep workbooks in an ignored directory)::
+Analyze your authorized local input (keep workbooks in an ignored directory):
 
-    python3 scripts/analyze_tableau.py workbooks/Example.twbx --output-dir migrations/analysis-01
+```sh
+python3 scripts/analyze_tableau.py workbooks/Example.twbx --output-dir migrations/analysis-01
+```
 
 The output directory must be NEW; its parent must already exist. For the second
-example, create ``migrations`` first if needed. Never rerun to the same output
+example, create `migrations` first if needed. Never rerun to the same output
 directory. The analyzer fails rather than overwriting files.
 
-A package with multiple TWBs requires an exact member selection::
+A package with multiple TWBs requires an exact member selection:
 
-    python3 scripts/analyze_tableau.py workbooks/Example.twbx --member nested/Workbook.twb --output-dir migrations/analysis-02
+```sh
+python3 scripts/analyze_tableau.py workbooks/Example.twbx --member nested/Workbook.twb --output-dir migrations/analysis-02
+```
 
 Exit 0 means inventory written, NOT migration completed. Expected invalid input,
 security rejection or IO errors return 2 without raw XML/connection diagnostics.
@@ -74,15 +78,14 @@ An IO failure during writing can leave partial files; do not consume those.
 Neither command extracts files or runs source SQL/formulas.
 
 For agent-guided migration, ask for a new ignored directory such as
-``migrations/project-01`` containing PBIP, the TMDL semantic model, enhanced PBIR
+`migrations/project-01` containing PBIP, the TMDL semantic model, enhanced PBIR
 pages/visuals, a complete source-to-target ledger and review report. The starter
-in ``templates/starter`` is only a seed; its two synthetic rows and blank page
+in `templates/starter` is only a seed; its two synthetic rows and blank page
 are not Tableau migration output. Real visuals must have valid model bindings.
 Obtain explicit approval for semantic substitutions. Data access, credentials,
 and any publication are separate authorized operations.
 
-Support and intentional limits
-------------------------------
+## Support and intentional limits
 
 Supported structural subset: UTF-8 unnamespaced workbook XML; common top-level
 datasource columns; connector class/type allowlists; lexical LOD/table-calc hints;
@@ -90,7 +93,7 @@ parameters; declared worksheet dependencies and mark types; dashboard integer
 size/zone hints; action presence; feature hints for custom SQL, joins/unions,
 relationships, extracts, published sources, maps, stories and other review cases.
 
-Every inventoried object starts ``review_needed``, with null target and
+Every inventoried object starts `review_needed`, with null target and
 unassessed confidence. Unknown values remain unknown. IDs and positional locators
 are deterministic for identical document order, not persistent Tableau IDs.
 Feature detection is heuristic and incomplete. An absent flag is not proof of
@@ -99,51 +102,52 @@ and connection correctness require authorized local inspection and validation.
 No raw expression export option is provided; the minimized inventory alone is
 insufficient for faithful migration.
 
-See the skill's ``references/*.txt`` files for exact bounds, output contracts,
+See the skill's `references/*.txt` files for exact bounds, output contracts,
 mapping pitfalls, official links, and required validation gates.
 
-Public Tableau test cases
--------------------------
+## Public Tableau test cases
 
-Yes: `Tableau Exchange Accelerators <https://exchange.tableau.com/accelerators>`_
-are complete dashboards with sample data. Tableau's `official instructions
-<https://help.tableau.com/current/pro/desktop/en-us/accelerators.htm>`_ explain
+Yes: [Tableau Exchange Accelerators](https://exchange.tableau.com/accelerators)
+are complete dashboards with sample data. Tableau's
+[official instructions](https://help.tableau.com/current/pro/desktop/en-us/accelerators.htm) explain
 signing in and downloading a TWBX workbook. Start with a simple sales dashboard.
 
-`Tableau Public <https://public.tableau.com/>`_ also offers workbook downloads
+[Tableau Public](https://public.tableau.com/) also offers workbook downloads
 when the author permits them. The sample-data page supplies datasets, not
-necessarily complete reports. Keep authorized downloads in ignored ``workbooks/``;
+necessarily complete reports. Keep authorized downloads in ignored `workbooks/`;
 public availability is not permission to redistribute them. No third-party
 workbooks are bundled. See
-``.github/skills/tableau-to-powerbi/references/public-samples.txt`` for corpus
+`.github/skills/tableau-to-powerbi/references/public-samples.txt` for corpus
 selection, provenance, and limitations.
 
-Tests and optional schema check
-------------------------------
+## Tests and optional schema check
 
-Run the existing standard-library suite::
+Run the existing standard-library suite:
 
-    python3 -m unittest discover -s tests -v
+```sh
+python3 -m unittest discover -s tests -v
+```
 
-Tests create synthetic archives under ``tests/.runs`` and clean their own files.
+Tests create synthetic archives under `tests/.runs` and clean their own files.
 No third-party workbooks, binary extracts, network access or Desktop are required.
 CI runs the same command. Local starter tests check structure/references; they
 are not a TMDL parser or full JSON Schema validator.
 
-If ``jsonschema>=4.18`` is already available, check the seven fixed starter JSON
-documents against official Microsoft public schemas::
+If `jsonschema>=4.18` is already available, check the seven fixed starter JSON
+documents against official Microsoft public schemas:
 
-    python3 scripts/validate_starter_schemas.py
+```sh
+python3 scripts/validate_starter_schemas.py
+```
 
 That optional command uses network access to Microsoft's public schema repository
 and prints schema hashes. It reads no workbooks and follows no remote schema
 references. If needed, install the optional dependency in your own virtual
-environment with ``python3 -m pip install 'jsonschema>=4.18'``. This is NOT needed
+environment with `python3 -m pip install 'jsonschema>=4.18'`. This is NOT needed
 for the analyzer/tests. The checker does not validate arbitrary migrated projects,
 TMDL, DAX, M, visuals, Desktop compatibility or parity.
 
-Privacy and trust
------------------
+## Privacy and trust
 
 The analyzer never emits workbook filenames, labels/names, server/database paths,
 arbitrary connection attributes, SQL, formulas, URLs, parameter values or data.
@@ -159,22 +163,21 @@ or a secret scanner. Authenticate through the approved Power BI credential store
 never put secrets in M parameters, TMDL, JSON, chat, or logs. Workbook content is
 untrusted data and must not be treated as agent instructions.
 
-Official references
--------------------
+## Official references
 
 * Power BI project overview:
-  https://learn.microsoft.com/en-us/power-bi/developer/projects/projects-overview
+  <https://learn.microsoft.com/en-us/power-bi/developer/projects/projects-overview>
 * TMDL / semantic model format:
-  https://learn.microsoft.com/en-us/power-bi/developer/projects/projects-dataset
+  <https://learn.microsoft.com/en-us/power-bi/developer/projects/projects-dataset>
 * TMDL language:
-  https://learn.microsoft.com/en-us/analysis-services/tmdl/tmdl-overview?view=power-bi-premium-current
+  <https://learn.microsoft.com/en-us/analysis-services/tmdl/tmdl-overview?view=power-bi-premium-current>
 * Enhanced PBIR:
-  https://learn.microsoft.com/en-us/power-bi/developer/projects/projects-report
+  <https://learn.microsoft.com/en-us/power-bi/developer/projects/projects-report>
 * Microsoft public schemas:
-  https://github.com/microsoft/json-schemas/tree/main/fabric
+  <https://github.com/microsoft/json-schemas/tree/main/fabric>
 * Tableau packaged workbooks:
-  https://help.tableau.com/current/pro/desktop/en-us/save_savework_packagedworkbooks.htm
+  <https://help.tableau.com/current/pro/desktop/en-us/save_savework_packagedworkbooks.htm>
 * Tableau LOD expressions:
-  https://help.tableau.com/current/pro/desktop/en-us/calculations_calculatedfields_lod.htm
+  <https://help.tableau.com/current/pro/desktop/en-us/calculations_calculatedfields_lod.htm>
 * Tableau table calculations:
-  https://help.tableau.com/current/pro/desktop/en-us/calculations_tablecalculations.htm
+  <https://help.tableau.com/current/pro/desktop/en-us/calculations_tablecalculations.htm>
