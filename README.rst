@@ -19,12 +19,18 @@ What actually runs today
 The analyzer does NOT generate a migrated Power BI project, translate formulas,
 read Hyper/TDE data, or verify semantic parity. The agent skill guides actual
 project authoring, approvals, and separate validation gates. Initial implementation
-used synthetic fixtures only. A subsequent authorized, agent-guided Amazon sample
-test exercised Desktop open/refresh/save/reopen and a working TMDL/PBIR project;
-see the `conversion test report <reports/amazon-conversion-01.md>`_. Full Tableau
-parity and business acceptance remain uncertified. This local test does not add
-automatic conversion to the analyzer, and passing unit tests or public JSON
-schemas alone does not establish migration parity.
+used synthetic fixtures only. Subsequent authorized, agent-guided sample tests
+exercised Desktop open/refresh/save/reopen and working TMDL/PBIR projects:
+
+* `Amazon conversion test <reports/amazon-conversion-01.md>`_
+* `HR Analytics conversion test <reports/hr-conversion-01.md>`_
+* `Northstar Logistics conversion test <reports/northstar-conversion-01.md>`_
+
+Full Tableau parity and business acceptance remain uncertified. These local tests
+do not add automatic conversion to the analyzer, and passing unit tests or public
+JSON schemas alone does not establish migration parity. The reports are shareable
+summaries; source workbooks, data, generated projects and detailed evidence remain
+local and ignored.
 
 Install and discover
 --------------------
