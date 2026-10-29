@@ -137,6 +137,12 @@ pending approvals; never fabricate approval or claim full completion.
 4. Rebuild worksheets as suitable visuals, dashboards as pages/containers, and
    parameters as approved slicers/what-if/field parameters. Recreate approved
    filter, highlight, navigation and drillthrough behavior explicitly.
+   Preserve normal Power BI visual interactions by default in every report.
+   Do not generate blanket `NoFilter` rules or disable chart cross-filtering/
+   cross-highlighting because Tableau actions are absent or parity is unverified.
+   Disable a specific interaction only with explicit user approval and record
+   the reason in the ledger. Test actual chart selections, affected charts/cards,
+   clearing selections and slicer combinations; slicer-only tests are insufficient.
 5. Reconcile zone coordinates with dashboard dimensions and target canvas units;
    nested/tiled/floating layouts, device variants, tooltips, maps, stories,
    extensions and web content need manual design review. Never assume raw Tableau

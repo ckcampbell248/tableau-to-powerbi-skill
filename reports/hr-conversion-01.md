@@ -11,6 +11,25 @@ exported snapshots, generated projects, caches, private configuration, screensho
 and detailed evidence remain outside source control. No source formulas,
 individual employee/manager identities or credentials are included here.
 
+## Interaction correction - October 29, 2026
+
+Blanket `NoFilter` overrides have been removed from all three pages, and the
+generator now preserves normal Power BI interactions. Native chart filtering/
+highlighting is enabled by default; absence of Tableau actions is not a reason
+to disable it. Selecting the Cashier job-role bar in an isolated Desktop copy
+changed four cards to independent CSV results: 1,610 employees, 1,292 current,
+318 former and $23,090.60 mean annual salary. Clearing restored 7,500 employees.
+The original open HR session was not reloaded over its unsaved changes.
+
+Only page interaction rules changed in the generated project; models, measures,
+visual definitions and cached data were preserved. All three pages were checked
+for remaining `NoFilter` overrides. The report-author follow-up returned zero
+errors and one existing unpublished-schema warning for Desktop-saved
+visualContainer 2.14 content, not a complete new exact-schema pass.
+Specific Tableau brush-action equivalence still requires acceptance; restoring
+normal Power BI interactivity does not establish that equivalence.
+Earlier validation and usage snapshots below remain historical, excluding this fix.
+
 ## Source and implementation
 
 The user supplied the
@@ -110,8 +129,8 @@ visual generator key. Final source-control reconciliation added both date ranges
   Native top-ten competition ranking retains ties (11 members in this snapshot).
 - Source rank/index addressing, filter order, partitioning and tie behavior still
   require executed Tableau comparisons. Matching membership is not row-order parity.
-- Three source brush/highlight actions are not recreated. Native chart-to-chart
-  filtering is disabled.
+- Three source brush/highlight actions are not certified equivalent to native
+  interactions. Normal Power BI chart interactions were restored on October 29.
 - The source Manager_Name filter and hard-coded null-name replacement are not
   implemented. No substitute person was invented.
 - Native page tabs/manual export are not approved equivalents for source canvas

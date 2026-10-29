@@ -11,6 +11,22 @@ Source workbooks, exported data, generated projects, caches, private configurati
 screenshots and detailed evidence remain outside source control. No source
 formulas or credentials are included here.
 
+## Interaction correction - October 29, 2026
+
+Blanket `NoFilter` rules have been removed from the page, and the generator now
+preserves normal Power BI interactions. Native testing in an isolated Desktop
+copy selected Birmingham's current-week on-time bar: four cards matched
+independent warehouse totals (435 completed orders, 93.10% on time, 3.56 days
+weighted lead time and 18 SLA breaches). The warehouse matrix and time-series
+also responded; clearing restored the all-warehouse headline values.
+
+Only page interaction rules changed in the generated project. Visual definitions,
+measures, models and cached data were preserved. The report-author follow-up
+returned zero errors and one existing unavailable-schema warning for
+Desktop-saved visualContainer 2.14 content; it is not a new complete exact-schema
+pass. The original validation and timing/token snapshots below exclude this
+correction, and G5 acceptance remains pending.
+
 ## Source and implementation
 
 The user supplied the
@@ -147,7 +163,7 @@ recorded rather than concealed as successful checks.
 - Some system, date-flag, constant-axis and authoring helpers are not exposed
   as standalone target fields; their blocked decisions remain in the ledger.
 
-Native chart-to-chart filtering is disabled. No source actions were present,
+Normal Power BI chart interactions are enabled. No source actions were present,
 so a missing Tableau highlight action is not invented. Independent extract
 arithmetic is not proof of executed Tableau, visual or filter-order parity.
 An acceptance owner must provide authorized reference outputs and accept or

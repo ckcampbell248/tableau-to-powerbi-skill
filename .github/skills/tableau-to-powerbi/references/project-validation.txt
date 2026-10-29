@@ -83,3 +83,14 @@ G5 semantic/visual parity separate. JSON validation cannot validate DAX/M behavi
 data security, connector execution, visual correctness or Desktop compatibility.
 Record exact commands/builds, error summaries without private source content,
 artifacts checked, time, reviewer, and unresolved unsupported/blocked source IDs.
+
+INTERACTION DEFAULTS AND REGRESSION CHECKS
+Preserve normal Power BI cross-filtering/cross-highlighting in every report.
+Absence of Tableau action objects does not justify disabling native interactions.
+Avoid blanket NoFilter overrides; any specific disabled interaction requires
+explicit user approval and a documented reason. Prefer native defaults unless
+the requested behavior needs a tested explicit filter/highlight override.
+Exercise actual chart data-point selections and verify affected charts/cards
+against independent filtered references. Verify clear-selection restoration and
+selection combined with slicers. Record cross-page scope and disconnected-table
+limitations separately; do not claim chart interaction coverage from slicer tests.

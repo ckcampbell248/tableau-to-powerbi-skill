@@ -10,6 +10,33 @@ customer-level data, exported snapshots, generated projects, caches, private
 configuration, screenshots, and detailed source-to-target evidence remain
 outside source control. This report contains no source formulas or credentials.
 
+## Interaction correction - October 29, 2026
+
+The original generator explicitly disabled chart-to-chart interactions using
+blanket `NoFilter` rules. This was an assistant implementation choice, not a
+measure limitation or a user-approved requirement. Slicer tests at initial
+delivery did not validate chart selections, and the original Markdown review
+did not clearly disclose the restriction.
+
+Those rules have now been removed from both pages and the generator corrected.
+The main page explicitly cross-filters charts/cards from its analytical charts;
+other interactions use normal Power BI defaults. Native testing in an isolated
+copy verified that selecting Clothing changes all five country bars and the
+monthly trend to independent CSV totals, combines with the Canada slicer, and
+returns to baseline when cleared. No measures, visual definitions or model files
+were changed.
+
+The October 29 report-author check found zero errors and one warning: existing
+Desktop-saved visualContainer 2.14 schemas were unavailable publicly. Those visual
+files were preserved rather than silently downgraded; this follow-up is not a
+new claim of complete exact-schema validation. The earlier schema results below
+describe the original reviewed public-contract delivery.
+
+The original open Desktop session was not reloaded over unsaved changes.
+Reopen the updated local project without saving an older in-memory definition
+over it. The original timing/token snapshot below is unchanged and excludes
+this correction. Full Tableau parity and owner acceptance remain pending.
+
 ## Source and implementation
 
 The user supplied the
@@ -116,7 +143,15 @@ future Desktop saves may again emit the newer format.
 - Percent-of-total addressing/filter order, source-wide/cross-page Country scope,
   and exact ranking/tie behavior require executed Tableau reference tests.
 - No security policy was inferred; future context filters/RLS need review.
-- No live upstream connection, unattended refresh setup, or Fabric publication.
+- No live upstream connection or unattended refresh setup. The original delivery
+  was local only. On October 29, the existing Amazon report in Tableau Migrations
+  was updated in place; cloud PBIR readback confirmed two pages, zero disabled
+  interaction overrides and 30 explicit filtering interactions. Its existing
+  model was preserved, and a cloud query returned current sales of 1,451,073.77.
+  Browser rendering was not verified because sign-in was required. Further
+  automated publication was cancelled; the user will publish from Desktop.
+  Reopen the corrected local PBIP before publishing; an older Desktop window
+  can still hold the previous, disabled interaction settings.
 
 ## Inventory lessons
 
