@@ -86,6 +86,11 @@ Retain the separate approvals required below.
    dump XML, formulas or SQL into tool logs/chat. If secure inspection cannot be
    performed, record the blocker and do not guess. Do not relax parser/ZIP limits
    to make a rejected workbook appear supported.
+5. Agree report locations and whether a sanitized summary may be shared. Keep the
+   detailed report at `migrations/<migration-id>/review.txt` in the authorized,
+   ignored output and the shareable summary at `reports/<migration-id>.md` relative
+   to the user's workspace root. Create `reports/` if needed and sharing is
+   authorized. A tracked summary must not contain private source details or evidence.
 
 ## Phase 1 — deterministic inventory, not migration
 
@@ -118,6 +123,20 @@ status, confidence, rationale, tests and evidence. Track joins, relationships,
 SQL, parameters and other feature-level decisions even if not standalone IDs.
 Add locally discovered objects absent from the structural inventory with documented
 locators; explicitly report this coverage gap.
+
+After inventory and initial mapping, create the human-readable migration report
+with overall status **in progress**; do not wait for Phase 6 or successful
+validation. Also create the sanitized `reports/<migration-id>.md` summary when
+sharing is authorized. For a resumed migration, update its existing report and
+summary rather than creating competing files; backfill either missing report.
+If work stops before initial mapping, write a minimal report of the actual
+analysis outcome or blocker without consuming failed/partial inventory.
+
+Update these reports after each authoring milestone, each validation gate attempt,
+and before pausing, stopping or handing off work, including blocked migrations.
+Keep them consistent with `migration-review.json`; the report is not a substitute
+for the ledger or evidence. Follow the report contents and privacy requirements in
+[project/validation guidance](references/project-validation.txt).
 
 Allowed migration statuses: `review_needed`, `blocked`, `unsupported`,
 `implemented_unvalidated`, `validated`. Exclusions require a reason and user approval,
@@ -223,5 +242,9 @@ confidence/review report and explicit unsupported list in the ignored migration
 directory. Keep approved external data/configuration and credentials separate.
 Summarize implemented scope, unresolved approvals, substitutions, all gate
 statuses, how to open/refresh, and next validation owner. Claim a completed
-migration only after all agreed coverage/parity gates pass. This repository has
+migration only after all agreed coverage/parity gates pass. Finalize the existing
+report and authorized shareable summary at handoff, even for partial or blocked
+work; distinguish handoff from completed migration. Provide the user with the
+actual report paths and state explicitly if a shareable summary was not created
+because sharing was not authorized. This repository has
 no real-workbook or end-to-end Desktop validation evidence yet.

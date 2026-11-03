@@ -95,6 +95,29 @@ are not Tableau migration output. Real visuals must have valid model bindings.
 Obtain explicit approval for semantic substitutions. Data access, credentials,
 and any publication are separate authorized operations.
 
+### Migration reports during work
+
+The agent creates the migration report after inventory and initial mapping,
+labels it **in progress**, and updates it after authoring milestones, validation
+gate attempts, and before any pause, stop or handoff. Reports are required for
+partial or blocked work too; they do not wait for migration completion. Resumed
+migrations update existing reports and backfill missing ones.
+
+The detailed report lives in the ignored migration directory, normally
+`migrations/<migration-id>/review.txt`, beside the ledger and private evidence.
+When sharing is authorized, the agent also creates and maintains a sanitized
+`reports/<migration-id>.md` summary in the user's workspace, creating `reports/`
+if needed. Private source details, data, credentials and evidence stay out of
+that shareable summary. If sharing is not authorized, the agent explains why
+there is no top-level summary and provides the local report path instead.
+
+Each report records current scope/progress, separate G1-G5 results, limitations,
+blockers, pending approvals, checks not run, next steps and the validation owner.
+Handoff finalizes the report even when the migration remains partial or blocked;
+it does not certify completion. The analyzer does not generate these reports.
+See the skill's [report lifecycle and contents](.github/skills/tableau-to-powerbi/references/project-validation.txt)
+for early-stop handling and required details.
+
 ## Support and intentional limits
 
 Supported structural subset: UTF-8 unnamespaced workbook XML; common top-level
