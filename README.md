@@ -48,6 +48,16 @@ To reuse it in another workspace, copy the skill directory AND the supporting
 `scripts/` and `templates/` paths into that workspace without overwriting
 existing files. Commands and template paths assume the repository/workspace root.
 
+For implementation, the migration skill explicitly routes model work to
+`semantic-model-authoring` and report/Desktop work to `powerbi-report-cli`,
+with workload-specific Fabric skills used only when needed and authorized.
+These specialist skills and their tools must be available separately in the
+agent host; cloning this repository does not install them. The agent discovers
+available capabilities, reports missing dependencies and uses documented
+fallbacks without treating unavailable validation as passed. See the skill's
+[capability discovery and routing](.github/skills/tableau-to-powerbi/SKILL.md#capability-discovery-and-specialist-routing)
+section. Data access and publication still require separate approval.
+
 ## Usage from repository root
 
 Analyze the included synthetic structure:

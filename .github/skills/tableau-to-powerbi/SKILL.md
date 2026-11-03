@@ -29,6 +29,46 @@ Do not fetch remote Tableau sources or read extracts without separate approval.
 No credential extraction, copying, solicitation in chat, or persistence in project
 files. Credentials belong in Power BI's credential store, outside this project.
 
+## Capability discovery and specialist routing
+
+At setup, discover the skills and tools available in the current agent host.
+Cloning this repository does not install Power BI/Fabric skills, MCP servers,
+Desktop, or authoring CLIs. Report missing capabilities relevant to the agreed
+scope; do not assume the originating machine's integrations exist elsewhere.
+
+Before each specialist operation, load the matching available skill and follow
+its current workflow, tool-selection rules and validation requirements. Discover
+the registered name, including any plugin namespace, rather than assuming a
+particular installation path or alias. Load only skills needed for that operation.
+
+| Work | Specialist skill |
+|---|---|
+| Semantic model discovery/authoring, relationships, DAX, and model Power Query M partitions | `semantic-model-authoring` |
+| Report planning/design, enhanced PBIR pages/visuals/interactions, report validation and Desktop report automation | `powerbi-report-cli` |
+| Authorized Fabric Warehouse or Lakehouse SQL endpoint access | `sqldw-cli` |
+| Authorized Fabric SQL database access | `sqldb-cli` |
+| Authorized Fabric notebooks or Spark work | `spark-cli` |
+| Authorized Fabric Dataflow Gen2 work | `dataflows-cli` |
+| Separately approved PBIP/report publication or rebinding | `powerbi-report-cli` management workflow; follow its routing for model publication |
+
+For other Fabric workloads, discover and load the owning workload skill before
+acting. Power Query M partitions in a semantic model do not by themselves require
+a Dataflow. A local migration does not require a Fabric workspace or publication.
+Routing means loading specialist guidance, not automatically launching subagents.
+
+If a needed skill or tool is unavailable, state the missing capability and its
+impact. Use a documented fallback from available guidance, such as a supported
+Desktop-generated example or user-assisted Desktop validation. Do not invent
+commands, schemas or successful checks. Ask before installing missing tooling,
+continue independent unblocked work, and mark unavailable checks `not_run` or
+affected work `blocked` rather than claiming completion.
+
+This migration skill remains responsible for source-to-target coverage, the
+approval ledger, privacy boundaries and G1-G5 evidence. Specialist guidance does
+not waive those requirements. Skill/tool availability is never authorization to
+read extracts, access data, execute source SQL, publish, or change permissions.
+Retain the separate approvals required below.
+
 ## Phase 0 — agree scope and protect input
 
 1. Confirm the user-authorized local workbook and a **new**, ignored migration
